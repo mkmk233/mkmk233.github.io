@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>服务器部署云端编程环境Code-Server | 蛍のうみ</title><meta name="author" content="mkmk"><meta name="copyright" content="mkmk"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="服务器部署云端编程环境Code-Server1.介绍code-server是用于服务器上的vscode，通过浏览器访问，优点是多平台。 就比如说我经常在宿舍的自己电脑上连接到云端开发调试，到了实验室之后直接用实验室的电脑登录这个网页就能继续开发。当然也是人懒，不想带着电脑跑来跑去怪累的。如果是运行一些需要大量时间处理的脚本也可以用这个，毕竟云端开发嘛。当然你要想用iPad或者手机之类的做些简单的v">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务器部署云端编程环境Code-Server">
+<meta property="og:url" content="https://www.mkmk07.me/2023/01/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AF%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83Code-Server/index.html">
+<meta property="og:site_name" content="蛍のうみ">
+<meta property="og:description" content="服务器部署云端编程环境Code-Server1.介绍code-server是用于服务器上的vscode，通过浏览器访问，优点是多平台。 就比如说我经常在宿舍的自己电脑上连接到云端开发调试，到了实验室之后直接用实验室的电脑登录这个网页就能继续开发。当然也是人懒，不想带着电脑跑来跑去怪累的。如果是运行一些需要大量时间处理的脚本也可以用这个，毕竟云端开发嘛。当然你要想用iPad或者手机之类的做些简单的v">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imgse.com/i/pSK1LSx">
+<meta property="article:published_time" content="2023-01-13T04:30:24.000Z">
+<meta property="article:modified_time" content="2023-01-13T04:31:34.264Z">
+<meta property="article:author" content="mkmk">
+<meta property="article:tag" content="Tech">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgse.com/i/pSK1LSx"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.mkmk07.me/2023/01/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AF%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83Code-Server/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '服务器部署云端编程环境Code-Server',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-13 12:31:34'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 5.4.2"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/avater.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 所有文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Tech/"><i class="fa-fw fas fa-tech"></i><span> CS相关</span></a></li><li><a class="site-page child" href="/Resource/"><i class="fa-fw fas fa- resource"></i><span> 资源分享</span></a></li><li><a class="site-page child" href="/Sharing/"><i class="fa-fw fas fa-anime"></i><span> 生活分享</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://imgse.com/i/pSK1LSx')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">蛍のうみ</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 所有文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/Tech/"><i class="fa-fw fas fa-tech"></i><span> CS相关</span></a></li><li><a class="site-page child" href="/Resource/"><i class="fa-fw fas fa- resource"></i><span> 资源分享</span></a></li><li><a class="site-page child" href="/Sharing/"><i class="fa-fw fas fa-anime"></i><span> 生活分享</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">服务器部署云端编程环境Code-Server</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-01-13T04:30:24.000Z" title="Created 2023-01-13 12:30:24">2023-01-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-01-13T04:31:34.264Z" title="Updated 2023-01-13 12:31:34">2023-01-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CS%E7%9B%B8%E5%85%B3/">CS相关</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="服务器部署云端编程环境Code-Server"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="服务器部署云端编程环境Code-Server"><a href="#服务器部署云端编程环境Code-Server" class="headerlink" title="服务器部署云端编程环境Code-Server"></a>服务器部署云端编程环境Code-Server</h1><h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1.介绍"></a>1.介绍</h2><p>code-server是用于服务器上的vscode，通过浏览器访问，优点是多平台。</p>
+<p>就比如说我经常在宿舍的自己电脑上连接到云端开发调试，到了实验室之后直接用实验室的电脑登录这个网页就能继续开发。当然也是人懒，不想带着电脑跑来跑去怪累的。如果是运行一些需要大量时间处理的脚本也可以用这个，毕竟云端开发嘛。当然你要想用iPad或者手机之类的做些简单的vscode也可以</p>
+<h2 id="2-部署"><a href="#2-部署" class="headerlink" title="2.部署"></a>2.部署</h2><p>首先在GitHub上下载项目软件包：<a target="_blank" rel="noopener" href="https://github.com/coder/code-server/releases">Releases · coder/code-server (github.com)</a></p>
+<p><img src="https://s1.ax1x.com/2023/01/13/pSKl0a9.png" alt="image-20230113121049027"></p>
+<p>根据自己的服务器处理器架构和系统选择不同的版本x86就选amd64，arm就选arm64.至于deb和tar的区别只是安装方法不同，这里我选deb的x86举例.</p>
+<h3 id="首先用wget下载到服务器"><a href="#首先用wget下载到服务器" class="headerlink" title="首先用wget下载到服务器"></a>首先用wget下载到服务器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/coder/code-server/releases/download/v4.9.1/code-server_4.9.1_amd64.deb</span><br></pre></td></tr></table></figure>
+
+<h3 id="然后是安装deb包"><a href="#然后是安装deb包" class="headerlink" title="然后是安装deb包"></a>然后是安装deb包</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i code-server_4.9.1_amd64.deb</span><br></pre></td></tr></table></figure>
+
+<p>安装结束后先直接打命令“code-server”运行一下后，会自动生成脚本文件</p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.config/code-server/config.yaml</span><br></pre></td></tr></table></figure>
+
+<p>bind-addr:后面的部分改成自己服务器的ip地址</p>
+<p>password:后面的部分改成你想要的密码</p>
+<p>然后vim基础命令，输入“:wq”退出保存</p>
+<h3 id="浏览器访问"><a href="#浏览器访问" class="headerlink" title="浏览器访问"></a>浏览器访问</h3><p>此时敲下code-server就可以启动服务器的vscode，然后在本机的浏览器上输入</p>
+<p>&lt;IP地址&gt;+8080</p>
+<p>即可访问</p>
+<p>但是此时需要在服务器上一直运行，即退出SSH会话后也在运行。两个方法，screen命令或者在启动命令前加nohup也可以</p>
+<h3 id="界面"><a href="#界面" class="headerlink" title="界面"></a>界面</h3><p>打开浏览器输入密码后就是这个样子</p>
+<p><img src="https://s1.ax1x.com/2023/01/13/pSK1oTJ.png" alt="image-20230113122606605"></p>
+<p>剩余操作和本地的vscode一模一样，安装插件、设置、编译器等</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://www.mkmk07.me">mkmk</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://www.mkmk07.me/2023/01/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AF%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83Code-Server/">https://www.mkmk07.me/2023/01/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AF%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83Code-Server/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Tech/">Tech</a></div><div class="post_share"><div class="social-share" data-image="https://imgse.com/i/pSK1LSx" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2023/01/11/%E5%A6%82%E4%BD%95%E7%94%A8Github%E5%AD%A6%E7%94%9F%E5%8C%85%E6%90%9E%E5%88%B0%E4%BA%91%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8/"><img class="prev-cover" src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/c1.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">如何用Github学生包搞到云端服务器</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/11/30/SSR/" title="SSR实时更新"><img class="cover" src="https://s1.ax1x.com/2023/01/10/pSmkKsK.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-30</div><div class="title">SSR实时更新</div></div></a></div><div><a href="/2023/01/11/%E5%A6%82%E4%BD%95%E7%94%A8Github%E5%AD%A6%E7%94%9F%E5%8C%85%E6%90%9E%E5%88%B0%E4%BA%91%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="如何用Github学生包搞到云端服务器"><img class="cover" src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/c1.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-11</div><div class="title">如何用Github学生包搞到云端服务器</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/avater.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mkmk</div><div class="author-info__description">蛍のうみ</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mkmk233"><i class="fab fa-github"></i><span>前往Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/mkmk233" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/mkmk412564165@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">网站缓慢建设中。。。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AF%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83Code-Server"><span class="toc-number">1.</span> <span class="toc-text">服务器部署云端编程环境Code-Server</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">1.介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%83%A8%E7%BD%B2"><span class="toc-number">1.2.</span> <span class="toc-text">2.部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E7%94%A8wget%E4%B8%8B%E8%BD%BD%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.2.1.</span> <span class="toc-text">首先用wget下载到服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%84%B6%E5%90%8E%E6%98%AF%E5%AE%89%E8%A3%85deb%E5%8C%85"><span class="toc-number">1.2.2.</span> <span class="toc-text">然后是安装deb包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.3.</span> <span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AE%BF%E9%97%AE"><span class="toc-number">1.2.4.</span> <span class="toc-text">浏览器访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%95%8C%E9%9D%A2"><span class="toc-number">1.2.5.</span> <span class="toc-text">界面</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AF%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83Code-Server/" title="服务器部署云端编程环境Code-Server"><img src="https://imgse.com/i/pSK1LSx" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="服务器部署云端编程环境Code-Server"/></a><div class="content"><a class="title" href="/2023/01/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AF%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83Code-Server/" title="服务器部署云端编程环境Code-Server">服务器部署云端编程环境Code-Server</a><time datetime="2023-01-13T04:30:24.000Z" title="Created 2023-01-13 12:30:24">2023-01-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/11/%E5%A6%82%E4%BD%95%E7%94%A8Github%E5%AD%A6%E7%94%9F%E5%8C%85%E6%90%9E%E5%88%B0%E4%BA%91%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="如何用Github学生包搞到云端服务器"><img src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/c1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何用Github学生包搞到云端服务器"/></a><div class="content"><a class="title" href="/2023/01/11/%E5%A6%82%E4%BD%95%E7%94%A8Github%E5%AD%A6%E7%94%9F%E5%8C%85%E6%90%9E%E5%88%B0%E4%BA%91%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="如何用Github学生包搞到云端服务器">如何用Github学生包搞到云端服务器</a><time datetime="2023-01-11T02:45:11.000Z" title="Created 2023-01-11 10:45:11">2023-01-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By mkmk</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">“だから人は忘れるのに……”</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="典,麻,孝,乐,急,蚌,赢" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
