@@ -1,0 +1,251 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Centos下实现ffmpeg云端离线视频转码 | 蛍のうみ</title><meta name="author" content="mkmk"><meta name="copyright" content="mkmk"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本教程环境为Centos，采用FFmpeg4.2作为转码工具  FFmpeg是一个免费的开放源代码工具集，用于处理多媒体文件。在windows下的应用很广，类似于格式工厂、Mediacoder都是以它作为核心，做一层GUI上去的。ffmpeg的使用必须包含指定的编码库，例如libavcodec，libavformat和libavutil。 ​    在此之前介绍下AV1（AOMedia Video">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos下实现ffmpeg云端离线视频转码">
+<meta property="og:url" content="https://www.mkmk07.me/2020/03/27/Centos%E4%B8%8B%E5%AE%9E%E7%8E%B0ffmpeg%E4%BA%91%E7%AB%AF%E7%A6%BB%E7%BA%BF%E8%A7%86%E9%A2%91%E8%BD%AC%E7%A0%81/index.html">
+<meta property="og:site_name" content="蛍のうみ">
+<meta property="og:description" content="本教程环境为Centos，采用FFmpeg4.2作为转码工具  FFmpeg是一个免费的开放源代码工具集，用于处理多媒体文件。在windows下的应用很广，类似于格式工厂、Mediacoder都是以它作为核心，做一层GUI上去的。ffmpeg的使用必须包含指定的编码库，例如libavcodec，libavformat和libavutil。 ​    在此之前介绍下AV1（AOMedia Video">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s1.ax1x.com/2023/01/16/pSlMWDO.png">
+<meta property="article:published_time" content="2020-03-26T16:13:28.000Z">
+<meta property="article:modified_time" content="2023-01-15T16:39:02.181Z">
+<meta property="article:author" content="mkmk">
+<meta property="article:tag" content="Tech">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2023/01/16/pSlMWDO.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.mkmk07.me/2020/03/27/Centos%E4%B8%8B%E5%AE%9E%E7%8E%B0ffmpeg%E4%BA%91%E7%AB%AF%E7%A6%BB%E7%BA%BF%E8%A7%86%E9%A2%91%E8%BD%AC%E7%A0%81/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Centos下实现ffmpeg云端离线视频转码',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-01-16 00:39:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/avater.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 所有文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.ax1x.com/2023/01/16/pSlMWDO.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">蛍のうみ</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 所有文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Centos下实现ffmpeg云端离线视频转码</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-03-26T16:13:28.000Z" title="Created 2020-03-27 00:13:28">2020-03-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-01-15T16:39:02.181Z" title="Updated 2023-01-16 00:39:02">2023-01-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CS%E7%9B%B8%E5%85%B3/">CS相关</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Centos下实现ffmpeg云端离线视频转码"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>本教程环境为Centos，采用FFmpeg4.2作为转码工具</p>
+<p><img src="https://s1.ax1x.com/2023/01/16/pSlMWDO.png" alt="image-20230116003527053"></p>
+<p>FFmpeg是一个免费的开放源代码工具集，用于处理多媒体文件。在windows下的应用很广，类似于格式工厂、Mediacoder都是以它作为核心，做一层GUI上去的。ffmpeg的使用必须包含指定的编码库，例如libavcodec，libavformat和libavutil。</p>
+<p>​    在此之前介绍下AV1（AOMedia Video 1）</p>
+<p>​    AV1作为一种新式的编码方式，压缩出的文件大小仅为H265的一半，缺点是编码时间极长，而且截止目前还没有GPU支援硬编码</p>
+<p>​    介于现在h265编码或AV1编码速度很慢且占用大量的本地系统资源，便考虑将整个转码过程搬到自己的云端进行转码压制。</p>
+<p><strong>以下所有指令需在root账户下执行</strong></p>
+<h2 id="一、安装EPEL-Release，因为安装过需要使用其他的repo源"><a href="#一、安装EPEL-Release，因为安装过需要使用其他的repo源" class="headerlink" title="一、安装EPEL Release，因为安装过需要使用其他的repo源"></a>一、安装EPEL Release，因为安装过需要使用其他的repo源</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y epel-release rpm</span><br><span class="line">rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</span><br><span class="line">yum repolist</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2023/01/16/pSlM5UH.png" alt="image-20230116003546691"></p>
+<p><img src="https://s1.ax1x.com/2023/01/16/pSlMI5d.png" alt="image-20230116003600538"></p>
+<h2 id="二、安装Nux-Dextop的repo源"><a href="#二、安装Nux-Dextop的repo源" class="headerlink" title="二、安装Nux Dextop的repo源"></a>二、安装Nux Dextop的repo源</h2><p>在centos7下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro</span><br><span class="line">rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm</span><br></pre></td></tr></table></figure>
+
+<p>或是在centos6下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro</span><br><span class="line">rpm -Uvh http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、安装FFmpeg"><a href="#三、安装FFmpeg" class="headerlink" title="三、安装FFmpeg"></a>三、安装FFmpeg</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ffmpeg </span><br></pre></td></tr></table></figure>
+
+<p>（在此之后就是缓慢的编译安装）</p>
+<p>  安装结束后检查下ffmpeg的版本信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -version</span><br></pre></td></tr></table></figure>
+
+<p>此时会输出：</p>
+<p>​    ffmpeg version 2.6.8 Copyright (c) 2000-2016 the FFmpeg developers  built with gcc 4.8.5 (GCC) 20150623 (Red Hat 4.8.5-4)。。。。。（后面省略一大堆的编码库）就说明安装成功</p>
+<h2 id="四、升级FFmpeg"><a href="#四、升级FFmpeg" class="headerlink" title="四、升级FFmpeg"></a>四、升级FFmpeg</h2><p>这样一键安装的版本太低了，而且<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/AV1">AV1</a>是FFmpeg在4.2时才有的新功能，所以获取并安装升级脚本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/q3aql/ffmpeg-install/master/ffmpeg-install</span><br><span class="line"></span><br><span class="line">chmod a+x ffmpeg-install</span><br><span class="line"></span><br><span class="line">./ffmpeg-install --install release</span><br></pre></td></tr></table></figure>
+
+<p>（接下来又是漫长的等待）</p>
+<p><img src="C:/Users/mkmk/AppData/Roaming/Typora/typora-user-images/image-20230116003635514.png" alt="image-20230116003635514"></p>
+<p>​    安装结束后再次检查版本：</p>
+<p><img src="https://s1.ax1x.com/2023/01/16/pSlMbxP.png" alt="image-20230116003648969"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -version</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="五、转码指令"><a href="#五、转码指令" class="headerlink" title="五、转码指令"></a>五、转码指令</h2><p>可能对于用惯windows下带有图形界面的转码工具的同学对于命令行压制转码不熟悉，每一次转码都要靠输指令，指令具体方法可以参照ffmpeg的wiki</p>
+<p><a target="_blank" rel="noopener" href="https://trac.ffmpeg.org/">https://trac.ffmpeg.org/</a></p>
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/pSlMLKf"><img src="https://s1.ax1x.com/2023/01/16/pSlMLKf.png" alt="pSlMLKf.png"></a></p>
+<p>在此附一举例</p>
+<p>采用CFR方式的h265转码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.mp4 -c:v libx265 -crf 28 -c:a aac -b:a 128k output.mp4</span><br></pre></td></tr></table></figure>
+
+<p>采用CFR方式的AV1转码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.mp4 -c:v libaom-AV1 -crf 30 -b:v 2000k -strict experimental output.mkv</span><br></pre></td></tr></table></figure>
+
+<p>若实现关闭终端进行离线转码，请在转码指令前附上nohup或Screen，例如nohup：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ffmpeg -i input.mp4 -c:v libx265 -crf 28 -c:a aac -b:a 128k output.mp4</span><br></pre></td></tr></table></figure>
+
+<p>然后再另外打开一个ssh去连接服务器，使用top命令检查任务</p>
+<p><a target="_blank" rel="noopener" href="https://imgse.com/i/pSlMOr8"><img src="https://s1.ax1x.com/2023/01/16/pSlMOr8.png" alt="pSlMOr8.png"></a></p>
+<p>可以看到ffmpeg在疯狂吃CPU</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://www.mkmk07.me">mkmk</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://www.mkmk07.me/2020/03/27/Centos%E4%B8%8B%E5%AE%9E%E7%8E%B0ffmpeg%E4%BA%91%E7%AB%AF%E7%A6%BB%E7%BA%BF%E8%A7%86%E9%A2%91%E8%BD%AC%E7%A0%81/">https://www.mkmk07.me/2020/03/27/Centos%E4%B8%8B%E5%AE%9E%E7%8E%B0ffmpeg%E4%BA%91%E7%AB%AF%E7%A6%BB%E7%BA%BF%E8%A7%86%E9%A2%91%E8%BD%AC%E7%A0%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Tech/">Tech</a></div><div class="post_share"><div class="social-share" data-image="https://s1.ax1x.com/2023/01/16/pSlMWDO.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/11/30/SSR/"><img class="next-cover" src="https://s1.ax1x.com/2023/01/10/pSmkKsK.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">SSR实时更新</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/01/14/%E5%A6%82%E4%BD%95%E5%A4%87%E4%BB%BD%E4%BD%A0%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%88%E6%88%96%E8%80%85%E6%9F%90%E4%B8%AA%E6%95%B0%E6%8D%AE%E7%9B%98%EF%BC%89/" title="如何备份你的操作系统（或者某个数据盘）"><img class="cover" src="https://s1.ax1x.com/2023/01/14/pSMZ4HI.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-14</div><div class="title">如何备份你的操作系统（或者某个数据盘）</div></div></a></div><div><a href="/2023/01/11/%E5%A6%82%E4%BD%95%E7%94%A8Github%E5%AD%A6%E7%94%9F%E5%8C%85%E6%90%9E%E5%88%B0%E4%BA%91%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="如何用Github学生包搞到云端服务器"><img class="cover" src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/c1.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-11</div><div class="title">如何用Github学生包搞到云端服务器</div></div></a></div><div><a href="/2023/01/13/%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AF%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83Code-Server/" title="服务器部署云端编程环境Code-Server"><img class="cover" src="https://s1.ax1x.com/2023/01/13/pSK1LSx.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-13</div><div class="title">服务器部署云端编程环境Code-Server</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/avater.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mkmk</div><div class="author-info__description">蛍のうみ</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mkmk233"><i class="fab fa-github"></i><span>前往Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/mkmk233" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/mkmk412564165@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">网站缓慢建设中。。。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E8%A3%85EPEL-Release%EF%BC%8C%E5%9B%A0%E4%B8%BA%E5%AE%89%E8%A3%85%E8%BF%87%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E7%9A%84repo%E6%BA%90"><span class="toc-number">1.</span> <span class="toc-text">一、安装EPEL Release，因为安装过需要使用其他的repo源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AE%89%E8%A3%85Nux-Dextop%E7%9A%84repo%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text">二、安装Nux Dextop的repo源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%89%E8%A3%85FFmpeg"><span class="toc-number">3.</span> <span class="toc-text">三、安装FFmpeg</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%8D%87%E7%BA%A7FFmpeg"><span class="toc-number">4.</span> <span class="toc-text">四、升级FFmpeg</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%BD%AC%E7%A0%81%E6%8C%87%E4%BB%A4"><span class="toc-number">5.</span> <span class="toc-text">五、转码指令</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/14/%E5%A6%82%E4%BD%95%E5%A4%87%E4%BB%BD%E4%BD%A0%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%88%E6%88%96%E8%80%85%E6%9F%90%E4%B8%AA%E6%95%B0%E6%8D%AE%E7%9B%98%EF%BC%89/" title="如何备份你的操作系统（或者某个数据盘）"><img src="https://s1.ax1x.com/2023/01/14/pSMZ4HI.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何备份你的操作系统（或者某个数据盘）"/></a><div class="content"><a class="title" href="/2023/01/14/%E5%A6%82%E4%BD%95%E5%A4%87%E4%BB%BD%E4%BD%A0%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%88%E6%88%96%E8%80%85%E6%9F%90%E4%B8%AA%E6%95%B0%E6%8D%AE%E7%9B%98%EF%BC%89/" title="如何备份你的操作系统（或者某个数据盘）">如何备份你的操作系统（或者某个数据盘）</a><time datetime="2023-01-14T00:38:13.000Z" title="Created 2023-01-14 08:38:13">2023-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/14/%E5%A6%82%E4%BD%95%E9%87%8D%E8%A3%85%E4%B8%80%E4%B8%AA%E7%BA%AF%E5%87%80%E7%9A%84Windows%E7%B3%BB%E7%BB%9F/" title="如何重装一个纯净的Windows系统"><img src="https://s1.ax1x.com/2023/01/14/pSMZIEt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何重装一个纯净的Windows系统"/></a><div class="content"><a class="title" href="/2023/01/14/%E5%A6%82%E4%BD%95%E9%87%8D%E8%A3%85%E4%B8%80%E4%B8%AA%E7%BA%AF%E5%87%80%E7%9A%84Windows%E7%B3%BB%E7%BB%9F/" title="如何重装一个纯净的Windows系统">如何重装一个纯净的Windows系统</a><time datetime="2023-01-14T00:34:04.000Z" title="Created 2023-01-14 08:34:04">2023-01-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By mkmk</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">“だから人は忘れるのに……”</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="典,麻,孝,乐,急,蚌,赢" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var qweather_key = 'd6cf54afcd56441289fd911f51184fc6';
+  var gaud_map_key = '97a7fff5ab024060988e0ab52b8e0869';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '113.34532,23.15624';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>
