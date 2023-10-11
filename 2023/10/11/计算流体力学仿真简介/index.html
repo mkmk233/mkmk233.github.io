@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>计算流体力学仿真简介 | 蛍のうみ</title><meta name="author" content="mkmk"><meta name="copyright" content="mkmk"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="计算流体力学仿真简介概念简介大致流程首先介绍下大致的流程，这一点在Workbench中写的很清楚，在此我对每个步骤进行大致解读  1.确定你研究的东西是流体，并且使用Fluent来进行模拟 2.对流体进行建模，对于难以描述出流体长什么样子的一般采用先建出模型，再进行体积抽取的方法。例如房间内的空气流动、水杯里的水和管道里的流体等。亦或者对其进行流体外包，例如人体周围空气的流动、物体周围的流体流动等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算流体力学仿真简介">
+<meta property="og:url" content="https://www.mkmk07.me/2023/10/11/%E8%AE%A1%E7%AE%97%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6%E4%BB%BF%E7%9C%9F%E7%AE%80%E4%BB%8B/index.html">
+<meta property="og:site_name" content="蛍のうみ">
+<meta property="og:description" content="计算流体力学仿真简介概念简介大致流程首先介绍下大致的流程，这一点在Workbench中写的很清楚，在此我对每个步骤进行大致解读  1.确定你研究的东西是流体，并且使用Fluent来进行模拟 2.对流体进行建模，对于难以描述出流体长什么样子的一般采用先建出模型，再进行体积抽取的方法。例如房间内的空气流动、水杯里的水和管道里的流体等。亦或者对其进行流体外包，例如人体周围空气的流动、物体周围的流体流动等">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://z1.ax1x.com/2023/01/26/pSN3FF1.jpg">
+<meta property="article:published_time" content="2023-10-11T02:27:44.000Z">
+<meta property="article:modified_time" content="2023-10-11T02:36:30.823Z">
+<meta property="article:author" content="mkmk">
+<meta property="article:tag" content="计算机仿真相关">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z1.ax1x.com/2023/01/26/pSN3FF1.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://www.mkmk07.me/2023/10/11/%E8%AE%A1%E7%AE%97%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6%E4%BB%BF%E7%9C%9F%E7%AE%80%E4%BB%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '计算流体力学仿真简介',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-11 10:36:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/avater.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 所有文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://z1.ax1x.com/2023/01/26/pSN3FF1.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">蛍のうみ</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 所有文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">计算流体力学仿真简介</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-10-11T02:27:44.000Z" title="Created 2023-10-11 10:27:44">2023-10-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-10-11T02:36:30.823Z" title="Updated 2023-10-11 10:36:30">2023-10-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BB%BF%E7%9C%9F%E7%9B%B8%E5%85%B3/">计算机仿真相关</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="计算流体力学仿真简介"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="计算流体力学仿真简介"><a href="#计算流体力学仿真简介" class="headerlink" title="计算流体力学仿真简介"></a>计算流体力学仿真简介</h1><h2 id="概念简介"><a href="#概念简介" class="headerlink" title="概念简介"></a>概念简介</h2><h3 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h3><p>首先介绍下大致的流程，这一点在Workbench中写的很清楚，在此我对每个步骤进行大致解读</p>
+<p><img src="https://s1.ax1x.com/2023/05/09/p90jjSJ.png" alt="image-20230509141411618"></p>
+<p>1.确定你研究的东西是流体，并且使用Fluent来进行模拟</p>
+<p>2.对流体进行建模，对于难以描述出流体长什么样子的一般采用先建出模型，再进行体积抽取的方法。例如房间内的空气流动、水杯里的水和管道里的流体等。亦或者对其进行流体外包，例如人体周围空气的流动、物体周围的流体流动等。这一步出来的文件应为标准工业三维模型格式（catpart、iges、model等等）</p>
+<p>3.网格化，针对流体进行网格化分解，网格数越多，结果越精准，但是后期的求解对计算机的内存和计算能力消耗越大。这一步出来的文件应为网格文件（.mesh）</p>
+<p>4.设置，在Fluent中设置各种条件、材料属性和计算方法。这一步出来的文件为Fluent工程文件（.cas）</p>
+<p>5.求解，对设置好的工程进行拟合计算。记得先初始化，然后再计算。网格数过多或者计算过慢可以考虑削减网格数、采用云计算和设置并行分布式计算等方法。这一步出来的还是Fluent工程文件，只不过带着计算结果（.dat）</p>
+<p>6.导出结果，这一步在Fluent中也可以完成，也可以借助CFD-Post等结果后处理软件对其进行美化。这一步出来的一般都是图片结果，做动画的话就是动画帧，拿剪辑软件串一下就行。</p>
+<p>其次要明确，仿真模拟的对象是什么，什么是边界条件，我们应选用什么湍流模型等一些基础的概念。</p>
+<h3 id="仿真对象"><a href="#仿真对象" class="headerlink" title="仿真对象"></a>仿真对象</h3><p>在制作模型时，我们一定要确定网格化的对象是流体，别建好模型，对模型本体进行网格划分，下图是对杯子里的水研究的举例。</p>
+<p><img src="https://s1.ax1x.com/2023/05/09/p9BpiDA.png" alt="image-20230509144957139"></p>
+<h3 id="边界条件（boundary-condition）"><a href="#边界条件（boundary-condition）" class="headerlink" title="边界条件（boundary condition）"></a>边界条件（boundary condition）</h3><p>边界条件是指求解域的边界的状态，简单来说就是我们研究的对象与外界环境的交互，例如速度流入、质量流出和壁面等等。边界条件的设置详细程度直接影响仿真的精度</p>
+<p><img src="https://s1.ax1x.com/2023/05/06/p9aXUWn.png" alt="image-20230506231349518"></p>
+<p>在该图中，绿色部分为壁面边界，橙色为求解区域，我们已知并需要设置的是左侧壁面的温度，右侧的壁面温度是求解结果。当然在真实情况下需要设置的条件还需更多，例如壁面的材料类型，滑移程度等等，如果是动边界还需要设置速度旋转等。</p>
+<p><img src="https://s1.ax1x.com/2023/05/06/p9aj86x.png" alt="image-20230506232311137"></p>
+<p>Fluent中所给出的边界条件类型，其实从字面意思就能看出来，质量流入流出、压力流入流出、速度流入（速度出用负数表示即可）和边界等，根据情况需要选择正确的出入类型 </p>
+<h3 id="湍流模型（Viscous-Model）与Navier-Stokes方程"><a href="#湍流模型（Viscous-Model）与Navier-Stokes方程" class="headerlink" title="湍流模型（Viscous Model）与Navier-Stokes方程"></a>湍流模型（Viscous Model）与Navier-Stokes方程</h3><p>为方便理解，这里引入其直角坐标方程形式</p>
+<p><img src="https://bkimg.cdn.bcebos.com/formula/ea3b922b6a6a1135677d81d0a4c970f9.svg" alt="img"></p>
+<p>NS方程（Navier-Stokes方程）是描述流体运动的基本方程，它由质量守恒方程和动量守恒方程组成。NS方程能够描述流体的粘性行为和速度场，但是对于湍流的描述并不充分。层流区可以通过NS方程进行求解近似和预测，但是到了湍流，流动开始变得混沌与振荡，雷诺数也相应地变大，所以我们要引入湍流模型。</p>
+<p><img src="https://pic3.zhimg.com/80/09b8c5b9e645779f4fbb33855e1ccd2e_720w.webp" alt="img"></p>
+<p>湍流模型是对湍流现象进行建模和描述的数学模型。它们的主要目的是描述湍流的平均流动特性，如湍流运动的速度、压力和湍流强度。湍流模型通常基于流体的平均特性和流体运动的统计学方法，对于较大规模的湍流模拟例如建筑物内的气流组织和城市群之间的气流组织等，最常用的是标准k-epsilon模型，其中右侧的epsilon经验值Ansys均已给出。</p>
+<p><img src="https://s1.ax1x.com/2023/05/09/p90XYCQ.png" alt="image-20230509135834740"></p>
+<h3 id="迭代与残差"><a href="#迭代与残差" class="headerlink" title="迭代与残差"></a>迭代与残差</h3><p>在Fluent计算时会出现个这么个窗口</p>
+<p><img src="https://z1.ax1x.com/2023/10/11/pPz6N36.png" alt="image-20231011101852875"> </p>
+<p>这个叫做残差(Residuals)曲线，每一根曲线代表着某个变量仿真的拟合误差。当所示例的曲线接近平缓时代表着每一次迭代的计算结果趋近于稳定。当然也会出现不收敛的现象，造成这种问题的原因有很多，有可能是模型网格自身的原因，也有可能是边界条件等影响</p>
+<h3 id="启动时注意事项"><a href="#启动时注意事项" class="headerlink" title="启动时注意事项"></a>启动时注意事项</h3><p><img src="https://s1.ax1x.com/2023/05/09/p9Bp6PK.png" alt="image-20230509145437795"></p>
+<p>Fluent启动时设置好仿真维度，求解线程数，一般线程数就是计算机的逻辑核心数，这样能大幅度提高计算速度。若有高精度需求可以勾选双精度的选项。家境富裕有NVIDIA工作站系列的显卡则可勾选GPGPU的选项</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://www.mkmk07.me">mkmk</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://www.mkmk07.me/2023/10/11/%E8%AE%A1%E7%AE%97%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6%E4%BB%BF%E7%9C%9F%E7%AE%80%E4%BB%8B/">https://www.mkmk07.me/2023/10/11/%E8%AE%A1%E7%AE%97%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6%E4%BB%BF%E7%9C%9F%E7%AE%80%E4%BB%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BB%BF%E7%9C%9F%E7%9B%B8%E5%85%B3/">计算机仿真相关</a></div><div class="post_share"><div class="social-share" data-image="https://z1.ax1x.com/2023/01/26/pSN3FF1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2023/03/05/%E3%80%90CFD%E3%80%91%E5%8D%A1%E9%97%A8%E6%B6%A1%E8%A1%97%E5%8A%A8%E7%94%BB%E6%A8%A1%E6%8B%9F/"><img class="prev-cover" src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/c1.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">【CFD】卡门涡街动画模拟</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/03/05/%E3%80%90CFD%E3%80%91%E5%8D%A1%E9%97%A8%E6%B6%A1%E8%A1%97%E5%8A%A8%E7%94%BB%E6%A8%A1%E6%8B%9F/" title="【CFD】卡门涡街动画模拟"><img class="cover" src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/c1.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-05</div><div class="title">【CFD】卡门涡街动画模拟</div></div></a></div><div><a href="/2023/01/24/%E6%9C%89%E9%99%90%E5%85%83%E4%BB%BF%E7%9C%9F%E7%AE%80%E4%BB%8B/" title="有限元仿真简介"><img class="cover" src="https://s1.ax1x.com/2023/01/24/pSYBSln.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-24</div><div class="title">有限元仿真简介</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/avater.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mkmk</div><div class="author-info__description">蛍のうみ</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mkmk233"><i class="fab fa-github"></i><span>前往Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/mkmk233" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:mkmk412564165@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/11817319" target="_blank" title="Bilibili"><i class="fa-brands fa-bilibili"></i></a><a class="social-icon" href="https://s1.ax1x.com/2023/01/26/pSNQL0s.jpg" target="_blank" title="微信"><i class="fa-brands fa-weixin"></i></a><a class="social-icon" href="https://res.abeim.cn/api/qq/?qq=412564165" target="_blank" title="QQ"><i class="fa-brands fa-qq"></i></a><a class="social-icon" href="https://twitter.com/mkmk_233" target="_blank" title="Twitter"><i class="fa-brands fa-twitter"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">正在把曾经做过的一些项目中有用的东西整理归档。。。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6%E4%BB%BF%E7%9C%9F%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">计算流体力学仿真简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">概念简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">大致流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BF%E7%9C%9F%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.1.2.</span> <span class="toc-text">仿真对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6%EF%BC%88boundary-condition%EF%BC%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">边界条件（boundary condition）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B9%8D%E6%B5%81%E6%A8%A1%E5%9E%8B%EF%BC%88Viscous-Model%EF%BC%89%E4%B8%8ENavier-Stokes%E6%96%B9%E7%A8%8B"><span class="toc-number">1.1.4.</span> <span class="toc-text">湍流模型（Viscous Model）与Navier-Stokes方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E4%B8%8E%E6%AE%8B%E5%B7%AE"><span class="toc-number">1.1.5.</span> <span class="toc-text">迭代与残差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.1.6.</span> <span class="toc-text">启动时注意事项</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/11/%E8%AE%A1%E7%AE%97%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6%E4%BB%BF%E7%9C%9F%E7%AE%80%E4%BB%8B/" title="计算流体力学仿真简介"><img src="https://z1.ax1x.com/2023/01/26/pSN3FF1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算流体力学仿真简介"/></a><div class="content"><a class="title" href="/2023/10/11/%E8%AE%A1%E7%AE%97%E6%B5%81%E4%BD%93%E5%8A%9B%E5%AD%A6%E4%BB%BF%E7%9C%9F%E7%AE%80%E4%BB%8B/" title="计算流体力学仿真简介">计算流体力学仿真简介</a><time datetime="2023-10-11T02:27:44.000Z" title="Created 2023-10-11 10:27:44">2023-10-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/03/05/%E3%80%90CFD%E3%80%91%E5%8D%A1%E9%97%A8%E6%B6%A1%E8%A1%97%E5%8A%A8%E7%94%BB%E6%A8%A1%E6%8B%9F/" title="【CFD】卡门涡街动画模拟"><img src="https://cdn.staticaly.com/gh/mkmk233/CDN@main/img/c1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【CFD】卡门涡街动画模拟"/></a><div class="content"><a class="title" href="/2023/03/05/%E3%80%90CFD%E3%80%91%E5%8D%A1%E9%97%A8%E6%B6%A1%E8%A1%97%E5%8A%A8%E7%94%BB%E6%A8%A1%E6%8B%9F/" title="【CFD】卡门涡街动画模拟">【CFD】卡门涡街动画模拟</a><time datetime="2023-03-05T02:00:39.000Z" title="Created 2023-03-05 10:00:39">2023-03-05</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By mkmk</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">“だから人は忘れるのに……”</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><canvas id="snow"></canvas><script async src="/js/snow.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="典,麻,孝,乐,急,蚌,赢" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var qweather_key = 'd6cf54afcd56441289fd911f51184fc6';
+  var gaud_map_key = '9222833d8a65a6b702778c1150818aab';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '113.34532,23.15624';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1s');
+    arr[i].setAttribute('data-wow-delay', '0.1s');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/01/25/Calinski-Harabaz系数——聚类指标评估/" alt=""><img width="48" height="48" src="https://s1.ax1x.com/2023/01/25/pSt5uE4.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-01-25</span><a class="blog-slider__title" href="2023/01/25/Calinski-Harabaz系数——聚类指标评估/" alt="">Calinski-Harabaz系数——聚类指标评估</a><div class="blog-slider__text">采用Calinski-Harabaz系数作为评估聚类模型的指标</div><a class="blog-slider__button" href="2023/01/25/Calinski-Harabaz系数——聚类指标评估/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/02/06/数据插补算法和实例/" alt=""><img width="48" height="48" src="https://s1.ax1x.com/2023/02/04/pSyufnx.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-02-06</span><a class="blog-slider__title" href="2023/02/06/数据插补算法和实例/" alt="">数据插补算法和实例</a><div class="blog-slider__text">对无效、缺失数据的修复方法</div><a class="blog-slider__button" href="2023/02/06/数据插补算法和实例/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/01/24/有限元仿真简介/" alt=""><img width="48" height="48" src="https://s1.ax1x.com/2023/01/24/pSYBSln.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-01-24</span><a class="blog-slider__title" href="2023/01/24/有限元仿真简介/" alt="">有限元仿真简介</a><div class="blog-slider__text">尽量用最简单的语言去阐述有限元是什么</div><a class="blog-slider__button" href="2023/01/24/有限元仿真简介/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2023/01/24/一些常用的顺手软件分享（持续更新中）/" alt=""><img width="48" height="48" src="https://s1.ax1x.com/2023/01/24/pStkoIH.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-01-24</span><a class="blog-slider__title" href="2023/01/24/一些常用的顺手软件分享（持续更新中）/" alt="">一些常用的顺手软件分享（持续更新中）</a><div class="blog-slider__text">我尽量贴出软件的官方下载页面，附网盘链接</div><a class="blog-slider__button" href="2023/01/24/一些常用的顺手软件分享（持续更新中）/" alt="">详情   </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://s1.ax1x.com/2023/01/26/pSN3kJx.jpg);"> <a class="categoryBar-list-link" href="categories/云端技术相关/">云端技术相关</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr">机器学习相关分享</span></li><li class="categoryBar-list-item" style="background:url(https://s1.ax1x.com/2023/01/26/pSN3PoR.jpg);"> <a class="categoryBar-list-link" href="categories/机器学习相关/">机器学习相关</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">云计算相关分享</span></li><li class="categoryBar-list-item" style="background:url(https://s1.ax1x.com/2023/01/24/pStkoIH.jpg);"> <a class="categoryBar-list-link" href="categories/计算机仿真相关/">计算机仿真相关</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">网盘和官网链接</span></li><li class="categoryBar-list-item" style="background:url(https://s1.ax1x.com/2023/01/14/pSMZIEt.jpg);"> <a class="categoryBar-list-link" href="categories/计算机基础教程/">计算机基础教程</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">尽量以最简单的语言帮到大家</span></li><li class="categoryBar-list-item" style="background:url(https://s1.ax1x.com/2023/01/26/pSN3FF1.jpg);"> <a class="categoryBar-list-link" href="categories/资源分享/">资源分享</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">Ansys和CFD</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
